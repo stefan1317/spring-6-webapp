@@ -1,13 +1,23 @@
 package guru.springframework.spring6webapp.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-/**
- * Created by jt, Spring Framework Guru.
- */
+@Getter
+@Setter
+@Builder
 @Entity
 public class Book {
 
@@ -19,40 +29,8 @@ public class Book {
 
     @ManyToMany
     @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "book_id"),
-        inverseJoinColumns = @JoinColumn(name = "author_id"))
-    private Set<Author> authors = new HashSet<>();
-
-    public Set<Author> getAuthors() {
-        return authors;
-    }
-
-    public void setAuthors(Set<Author> authors) {
-        this.authors = authors;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
+            inverseJoinColumns = @JoinColumn(name = "author_id"))
+    private Set<Author> authors;
 
     @Override
     public String toString() {
@@ -66,24 +44,13 @@ public class Book {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Book)) return false;
-
+        if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-
-        return getId() != null ? getId().equals(book.getId()) : book.getId() == null;
+        return Objects.equals(id, book.id);
     }
 
     @Override
     public int hashCode() {
-        return getId() != null ? getId().hashCode() : 0;
+        return Objects.hashCode(id);
     }
 }
-
-
-
-
-
-
-
-
